@@ -1,5 +1,6 @@
 module Lib
-    ( parseFile
+    ( parseFile,
+      CSV (..)
     ) where
 
 import qualified Data.Attoparsec.Text as A

@@ -20,7 +20,6 @@ parseFile path = do
 someParser :: A.Parser CSV
 someParser = do
   rows <- A.sepBy1 rowParser (A.char '\n') 
-  --A.endOfInput
   return (CSV rows)
 
 
@@ -42,7 +41,7 @@ quotationParser =
     let quote = '"' in
     let f q1 t q2 = Text.cons q1 (Text.snoc t q2) in
     f <$> A.char quote <*> 
-    (quotedString [quote]) <*>
+    quotedString [quote] <*>
     A.char quote
 
 quotedString :: String ->  A.Parser Text.Text

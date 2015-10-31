@@ -33,7 +33,7 @@ executable HulkImport-exe
 test-suite HulkImport-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
-  main-is:             Spec.hs
+  main-is:             Tests.hs
   build-depends:       base
                      , HulkImport
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N

@@ -4,17 +4,15 @@ module Lib
 
 import qualified Data.Attoparsec.Text as A
 import qualified Data.Text as Text
-import qualified Data.Text.IO as TIO
+
 
 data CSV = CSV [[Text.Text]] deriving Show
 
-parseFile :: FilePath -> IO CSV
-parseFile path = do
-  text <- TIO.readFile path
-  return $
+parseFile :: Text.Text -> CSV
+parseFile text =
     case A.parseOnly someParser text of
-    Left  s  -> error s 
-    Right c -> c
+      Left  s  -> error s
+      Right c -> c
 
 someParser :: A.Parser CSV
 someParser = do
@@ -46,5 +44,3 @@ quotationParser =
 quotedString :: String ->  A.Parser Text.Text
 quotedString quote = A.takeWhile (A.notInClass quote)
 
-testFile :: FilePath
-testFile = "/Users/toby/Downloads/Countries_v1.csv"

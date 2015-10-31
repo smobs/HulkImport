@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Lib
     ( parseFile
     ) where

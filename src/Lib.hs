@@ -17,7 +17,7 @@ parseFile text =
 
 someParser :: A.Parser CSV
 someParser = do
-  rows <- A.sepBy1 rowParser (A.char '\n') 
+  rows <- A.sepBy1 rowParser (A.skip A.isEndOfLine) 
   return (CSV rows)
 
 

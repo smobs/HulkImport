@@ -1,4 +1,4 @@
-module Lib
+module CSVParser
     ( parseFile,
       CSV (..)
     ) where

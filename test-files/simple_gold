@@ -1,2 +1,2 @@
-VALUES (1, Toby, Dev, 26) , (2, "Jenny, Girlfriend", Accountant, 26)
+VALUES (1, Toby, Dev, 26), (2, "Jenny, Girlfriend", Accountant, 26), 
 GO

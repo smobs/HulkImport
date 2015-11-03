@@ -15,7 +15,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     CSV.Parse, HulkImport
+  exposed-modules:     CSV.Parse, CSV.SQL, HulkImport
   build-depends:       base,
                        attoparsec,
                        text,

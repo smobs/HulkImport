@@ -3,7 +3,7 @@ module HulkImport (
                   )
 where
 
-import CSVParser
+import CSV.Parse
 import qualified Data.Text.IO as TIO
 import qualified Data.Text as T 
 import qualified Text.PrettyPrint as P

@@ -1,4 +1,4 @@
-module CSVParser
+module CSV.Parse
     ( parseFile,
       CSV (..)
     ) where

@@ -8,8 +8,8 @@ import qualified Data.Text as Text
 import CSV.Types
 
 -- | 'parse' parses text in the CSV format.  Delimiters are ',' and new lines.
--- | Quotation is performed with '"'.
--- | TODO: Files in the wrong format throw an error :(   
+-- Quotation is performed with '"'.
+-- TODO: Files in the wrong format throw an error :(   
 parse :: Text.Text -> CSV Text.Text
 parse text =
     case A.parseOnly csvParser text of

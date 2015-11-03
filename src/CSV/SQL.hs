@@ -2,14 +2,15 @@ module CSV.SQL
     (toSQL) 
 where
 
-import CSV.Parse
+import CSV.Types
 import Text.PrettyPrint
 import qualified Data.Text as T
 
-toSQL :: CSV -> String
+-- | Converts CSV data to the Values clause of an insert statement
+toSQL :: CSV T.Text -> String
 toSQL  = render . csvDoc
 
-csvDoc :: CSV -> Doc
+csvDoc :: CSV T.Text -> Doc
 csvDoc (CSV rows) = hcat (text "VALUES " : fmap rowDoc rows)
                    <> text "\nGO"
 

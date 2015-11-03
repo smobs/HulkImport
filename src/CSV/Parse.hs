@@ -1,21 +1,19 @@
 module CSV.Parse
-    ( parseFile,
-      CSV (..)
+    ( parseFile
     ) where
 
 import qualified Data.Attoparsec.Text as A
 import qualified Data.Text as Text
 
+import CSV.Types
 
-data CSV = CSV [[Text.Text]] deriving Show
-
-parseFile :: Text.Text -> CSV
+parseFile :: Text.Text -> CSV Text.Text
 parseFile text =
     case A.parseOnly csvParser text of
       Left  s  -> error s
       Right c -> c
 
-csvParser :: A.Parser CSV
+csvParser :: A.Parser (CSV Text.Text)
 csvParser = do
   rows <- A.sepBy1 rowParser (A.skip A.isEndOfLine) 
   return (CSV rows)

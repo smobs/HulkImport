@@ -11,12 +11,12 @@ data CSV = CSV [[Text.Text]] deriving Show
 
 parseFile :: Text.Text -> CSV
 parseFile text =
-    case A.parseOnly someParser text of
+    case A.parseOnly csvParser text of
       Left  s  -> error s
       Right c -> c
 
-someParser :: A.Parser CSV
-someParser = do
+csvParser :: A.Parser CSV
+csvParser = do
   rows <- A.sepBy1 rowParser (A.skip A.isEndOfLine) 
   return (CSV rows)
 

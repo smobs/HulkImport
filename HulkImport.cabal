@@ -19,7 +19,7 @@ library
                        CSV.Parse,
                        CSV.SQL, 
                        HulkImport
-  build-depends:       base,
+  build-depends:       base < 5,
                        attoparsec,
                        text,
                        pretty

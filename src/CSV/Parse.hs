@@ -1,5 +1,5 @@
 module CSV.Parse
-    ( parseFile
+    ( parse
     ) where
 
 import qualified Data.Attoparsec.Text as A
@@ -7,8 +7,11 @@ import qualified Data.Text as Text
 
 import CSV.Types
 
-parseFile :: Text.Text -> CSV Text.Text
-parseFile text =
+-- | 'parse' parses text in the CSV format.  Delimiters are ',' and new lines.
+-- | Quotation is performed with '"'.
+-- | TODO: Files in the wrong format throw an error :(   
+parse :: Text.Text -> CSV Text.Text
+parse text =
     case A.parseOnly csvParser text of
       Left  s  -> error s
       Right c -> c

@@ -10,11 +10,11 @@ toSQL :: CSV -> String
 toSQL  = render . csvDoc
 
 csvDoc :: CSV -> Doc
-csvDoc (CSV rows) = hcat (text "VALUES " : fmap toValues rows)
+csvDoc (CSV rows) = hcat (text "VALUES " : fmap rowDoc rows)
                    <> text "\nGO"
 
-toValues :: [T.Text] -> Doc
-toValues  =
+rowDoc :: [T.Text] -> Doc
+rowDoc  =
     (<> text ", ") .
     parens
          . hcat

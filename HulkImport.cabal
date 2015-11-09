@@ -1,5 +1,5 @@
 name:                HulkImport
-version:             0.1.0.2
+version:             0.1.0.3
 synopsis:            Easily bulk import CSV data to SQL Server
 description:         Please see README.md
 homepage:            http://github.com/tobs169/HulkImport#readme

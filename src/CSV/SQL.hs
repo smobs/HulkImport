@@ -7,14 +7,14 @@ import Text.PrettyPrint
 import qualified Data.Text as T
 
 -- | Converts CSV data to the Values clause of an insert statement
-toSQL :: CSV T.Text -> String
+toSQL :: RenderSqlType a => CSV a -> String
 toSQL  = render . csvDoc
 
-csvDoc :: CSV T.Text -> Doc
+csvDoc :: RenderSqlType a => CSV a -> Doc
 csvDoc (CSV rows) = hcat (text "VALUES " : fmap rowDoc rows)
                    <> text "\nGO"
 
-rowDoc :: [T.Text] -> Doc
+rowDoc :: RenderSqlType a => [a] -> Doc
 rowDoc  =
     (<> text ", ") .
     parens
@@ -22,5 +22,12 @@ rowDoc  =
          . punctuate (text ", ")
          . map elemDoc
 
-elemDoc :: T.Text -> Doc
-elemDoc = (char  'N' <> ) . quotes .  text . T.unpack . T.strip
+elemDoc :: RenderSqlType a => a -> Doc
+elemDoc = renderSQL
+
+
+class RenderSqlType a where
+    renderSQL :: a -> Doc
+
+instance RenderSqlType T.Text  where
+    renderSQL = (char  'N' <> ) . quotes .  text . T.unpack . T.strip 

@@ -1,9 +1,11 @@
+{-# LANGUAGE OverloadedStrings #-}
 module CSV.Parse
     ( parse
     ) where
 
 import qualified Data.Attoparsec.Text as A
 import qualified Data.Text as Text
+import Control.Applicative
 
 import CSV.Types
 
@@ -23,14 +25,16 @@ csvParser = do
 
 
 rowParser :: A.Parser [SQLVal]
-rowParser = A.sepBy1 elementParser $ A.char ','
+rowParser = A.sepBy1 elementParser $ A.string ", "
 
 elementParser :: A.Parser SQLVal
-elementParser = do 
-  text <- A.many1 $ A.choice
-          [ textParser
-          , quotationParser ]
-  return (NVar $ Text.concat text)
+elementParser =
+    I <$> A.decimal
+    <|>  do
+      text <- A.many1 $
+              textParser
+              <|> quotationParser
+      return (NVar $ Text.concat text)
 
 textParser :: A.Parser Text.Text
 textParser = A.takeWhile1 (A.notInClass [',','\n', '"'])

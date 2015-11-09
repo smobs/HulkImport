@@ -10,27 +10,27 @@ import CSV.Types
 -- | 'parse' parses text in the CSV format.  Delimiters are ',' and new lines.
 -- Quotation is performed with '"'.
 -- TODO: Files in the wrong format throw an error :(   
-parse :: Text.Text -> CSV Text.Text
+parse :: Text.Text -> CSV SQLVal
 parse text =
     case A.parseOnly csvParser text of
       Left  s  -> error s
       Right c -> c
 
-csvParser :: A.Parser (CSV Text.Text)
+csvParser :: A.Parser (CSV SQLVal)
 csvParser = do
   rows <- A.sepBy1 rowParser (A.skip A.isEndOfLine) 
   return (CSV rows)
 
 
-rowParser :: A.Parser [Text.Text]
+rowParser :: A.Parser [SQLVal]
 rowParser = A.sepBy1 elementParser $ A.char ','
 
-elementParser :: A.Parser Text.Text
+elementParser :: A.Parser SQLVal
 elementParser = do 
   text <- A.many1 $ A.choice
           [ textParser
           , quotationParser ]
-  return (Text.concat text)
+  return (NVar $ Text.concat text)
 
 textParser :: A.Parser Text.Text
 textParser = A.takeWhile1 (A.notInClass [',','\n', '"'])

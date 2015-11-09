@@ -31,3 +31,10 @@ class RenderSqlType a where
 
 instance RenderSqlType T.Text  where
     renderSQL = (char  'N' <> ) . quotes .  text . T.unpack . T.strip 
+
+instance RenderSqlType Int where
+    renderSQL = int
+
+instance RenderSqlType SQLVal where
+    renderSQL (I i) = renderSQL i
+    renderSQL (NVar t) = renderSQL t

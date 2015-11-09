@@ -19,6 +19,8 @@ rowDoc  =
     (<> text ", ") .
     parens
          . hcat
-         . punctuate (text ",")
-         . map (text . T.unpack)
+         . punctuate (text ", ")
+         . map elemDoc
 
+elemDoc :: T.Text -> Doc
+elemDoc = (char  'N' <> ) . quotes .  text . T.unpack . T.strip

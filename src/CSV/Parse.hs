@@ -20,9 +20,10 @@ parse text =
 
 csvParser :: A.Parser (CSV SQLVal)
 csvParser = do
-  rows <- A.sepBy1 rowParser (A.skip A.isEndOfLine)
+  rows <- A.sepBy1 rowParser A.endOfLine
+  A.skipSpace
+  A.endOfInput
   return (CSV rows)
-
 
 rowParser :: A.Parser [SQLVal]
 rowParser = A.sepBy1 elementParser $ A.string ","
@@ -30,6 +31,7 @@ rowParser = A.sepBy1 elementParser $ A.string ","
 elementParser :: A.Parser SQLVal
 elementParser = A.skipSpace >>
    I <$> A.decimal <|>
+   D <$> A.double  <|>
    do
      text <- A.many1 $ textParser <|> quotationParser
      return (NVar $ Text.concat text)

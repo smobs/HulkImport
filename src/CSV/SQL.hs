@@ -1,10 +1,11 @@
-module CSV.SQL 
-    (toSQL) 
+{-# LANGUAGE OverloadedStrings #-}
+module CSV.SQL
+    (toSQL)
 where
 
-import CSV.Types
-import Text.PrettyPrint
-import qualified Data.Text as T
+import           CSV.Types
+import qualified Data.Text        as T
+import           Text.PrettyPrint
 
 -- | Converts CSV data to the Values clause of an insert statement
 toSQL :: RenderSqlType a => CSV a -> String
@@ -25,12 +26,14 @@ rowDoc  =
 elemDoc :: RenderSqlType a => a -> Doc
 elemDoc = renderSQL
 
+wrapQuotes :: T.Text -> T.Text
+wrapQuotes = T.replace "'" "''"
 
 class RenderSqlType a where
     renderSQL :: a -> Doc
 
 instance RenderSqlType T.Text  where
-    renderSQL = (char  'N' <> ) . quotes .  text . T.unpack . T.strip 
+    renderSQL = (char  'N' <> ) . quotes . text . T.unpack . wrapQuotes . T.strip
 
 instance RenderSqlType Int where
     renderSQL = int

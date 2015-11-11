@@ -37,6 +37,10 @@ instance RenderSqlType T.Text  where
 instance RenderSqlType Int where
     renderSQL = int
 
+instance RenderSqlType Double where
+    renderSQL = double
+
 instance RenderSqlType SQLVal where
     renderSQL (I i) = renderSQL i
     renderSQL (NVar t) = renderSQL t
+    renderSQL (D d) = renderSQL d

@@ -12,12 +12,11 @@ toSQL :: RenderSqlType a => CSV a -> String
 toSQL  = render . csvDoc
 
 csvDoc :: RenderSqlType a => CSV a -> Doc
-csvDoc (CSV rows) = hcat (text "VALUES " : fmap rowDoc rows)
+csvDoc (CSV rows) = hcat (text "VALUES " :  punctuate (text ", ") (fmap rowDoc rows))
                    <> text "\nGO"
 
 rowDoc :: RenderSqlType a => [a] -> Doc
 rowDoc  =
-    (<> text ", ") .
     parens
          . hcat
          . punctuate (text ", ")

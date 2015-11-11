@@ -1,17 +1,17 @@
-module Gold.Tests 
+module Gold.Tests
     (
      tests
     )
 where
 
-import Test.Tasty
-import Test.Tasty.Golden
-import qualified HulkImport as HI
+import qualified HulkImport        as HI
+import           Test.Tasty
+import           Test.Tasty.Golden
 
 tests :: TestTree
-tests = testGroup "Golden Tests" [simpleTest]
+tests = testGroup "Golden Tests" [simpleTest "simple", simpleTest "nospace"]
 
-simpleTest :: TestTree
-simpleTest = 
-    let output = "./dist/simple_out" in
-    goldenVsFile "Simple test" "./test-files/simple_gold" output (HI.importFile "./test-files/simple_in" output)
+simpleTest :: String -> TestTree
+simpleTest f =
+    let output = "./dist/" ++ f ++ "_out" in
+    goldenVsFile "Simple test" "./test-files/simple_gold" output (HI.importFile ("./test-files/" ++ f ++ "_in") output)

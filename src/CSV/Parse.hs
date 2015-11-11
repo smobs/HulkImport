@@ -30,11 +30,19 @@ rowParser = A.sepBy1 elementParser $ A.string ","
 
 elementParser :: A.Parser SQLVal
 elementParser = A.skipSpace >>
-   I <$> A.decimal <|>
+   I <$> intParser   <|>
    D <$> A.double  <|>
    do
      text <- A.many1 $ textParser <|> quotationParser
      return (NVar $ Text.concat text)
+
+intParser :: A.Parser Int
+intParser = do
+          i <- A.decimal
+          mnext <- A.peekChar
+          case mnext of
+            Just '.' -> fail "Not an int"
+            _ -> return i
 
 textParser :: A.Parser Text.Text
 textParser = A.takeWhile1 (A.notInClass [',','\n', '"'])

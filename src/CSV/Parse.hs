@@ -28,13 +28,11 @@ rowParser :: A.Parser [SQLVal]
 rowParser = A.sepBy1 elementParser $ A.string ","
 
 elementParser :: A.Parser SQLVal
-elementParser =
-    I <$> A.decimal
-    <|>  do
-      text <- A.many1 $
-              textParser
-              <|> quotationParser
-      return (NVar $ Text.concat text)
+elementParser = A.skipSpace >>
+   I <$> A.decimal <|>
+   do
+     text <- A.many1 $ textParser <|> quotationParser
+     return (NVar $ Text.concat text)
 
 textParser :: A.Parser Text.Text
 textParser = A.takeWhile1 (A.notInClass [',','\n', '"'])

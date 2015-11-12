@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module HulkImport (
                    importFile
                   )
@@ -32,9 +33,10 @@ defaultSQL v =
   case v of
   (N d) -> SQLFloat (realToFrac d)
   (I i) -> SQLInt i
+  (T "NULL") -> Null
   (T t) -> NVar t
 
 applySchema :: [Bool] -> [SQLVal] -> [SQLVal]
 applySchema = zipWith (\b v -> if b
-                                  then textify v
+                                  then  textify v
                                   else v)

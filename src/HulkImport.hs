@@ -15,15 +15,26 @@ importFile :: FilePath -- ^Location of the input file
            -> IO ()
 importFile input output = do
   contents <- TIO.readFile input
-  TIO.writeFile output $ T.pack $ toSQL $ parse contents
+  TIO.writeFile output $ T.pack $ toSQL $ defaultSchema $ parse contents
 
-textify :: SQLVal -> T.Text
+textify :: SQLVal -> SQLVal
 textify v = case v of
-               (I i) -> T.pack $ show i
-               (D d) -> T.pack $ show d
-               (NVar n) ->  n
+               (SQLInt i) -> NVar $ T.pack $ show i
+               (SQLFloat d) -> NVar $ T.pack $ show d
+               (NVar n) -> NVar n
+               Null -> Null
+
+defaultSchema :: CSV ParseVal -> CSV SQLVal
+defaultSchema (CSV vs) = CSV (map (map defaultSQL) vs)
+
+defaultSQL :: ParseVal -> SQLVal
+defaultSQL v =
+  case v of
+  (N d) -> SQLFloat (realToFrac d)
+  (I i) -> SQLInt i
+  (T t) -> NVar t
 
 applySchema :: [Bool] -> [SQLVal] -> [SQLVal]
 applySchema = zipWith (\b v -> if b
-                                  then NVar $ textify v
+                                  then textify v
                                   else v)

@@ -1,7 +1,9 @@
-module CSV.Types ( CSV (..), SQLVal(..)) where
+module CSV.Types ( CSV (..), SQLVal(..), ParseVal(..)) where
 
 import           Data.Text (Text)
 
 data CSV a = CSV [[a]] deriving Show
 
-data SQLVal = I Int | NVar Text | D Double
+data ParseVal = T Text | N Double | I Int
+
+data SQLVal = SQLInt Int | NVar Text | SQLFloat Float  | Null

@@ -12,29 +12,29 @@ import           CSV.Types
 -- | 'parse' parses text in the CSV format.  Delimiters are ',' and new lines.
 -- Quotation is performed with '"'.
 -- TODO: Files in the wrong format throw an error :(
-parse :: Text.Text -> CSV SQLVal
+parse :: Text.Text -> CSV ParseVal
 parse text =
     case A.parseOnly csvParser text of
       Left  s  -> error s
       Right c -> c
 
-csvParser :: A.Parser (CSV SQLVal)
+csvParser :: A.Parser (CSV ParseVal)
 csvParser = do
   rows <- A.sepBy1 rowParser A.endOfLine
   A.skipSpace
   A.endOfInput
   return (CSV rows)
 
-rowParser :: A.Parser [SQLVal]
+rowParser :: A.Parser [ParseVal]
 rowParser = A.sepBy1 elementParser $ A.string ","
 
-elementParser :: A.Parser SQLVal
+elementParser :: A.Parser ParseVal
 elementParser = A.skipSpace >>
-   I <$> intParser   <|>
-   D <$> A.double  <|>
+   I <$> intParser <|>
+   N <$> A.double  <|>
    do
      text <- A.many1 $ textParser <|> quotationParser
-     return (NVar $ Text.concat text)
+     return (T $ Text.concat text)
 
 intParser :: A.Parser Int
 intParser = do

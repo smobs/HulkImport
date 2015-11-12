@@ -37,10 +37,11 @@ instance RenderSqlType T.Text  where
 instance RenderSqlType Int where
     renderSQL = int
 
-instance RenderSqlType Double where
-    renderSQL = double
+instance RenderSqlType Float where
+    renderSQL = float
 
 instance RenderSqlType SQLVal where
-    renderSQL (I i) = renderSQL i
+    renderSQL (SQLInt i) = renderSQL i
     renderSQL (NVar t) = renderSQL t
-    renderSQL (D d) = renderSQL d
+    renderSQL (SQLFloat d) = renderSQL d
+    renderSQL Null = (text "NULL")
